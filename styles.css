@@ -1,0 +1,72 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.bin {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #000;
+}
+
+.bin-reciclavel {
+  bottom: 20px;
+  left: 20px;
+}
+
+.bin-organico {
+  bottom: 20px;
+  left: 140px;
+}
+
+.bin-plastico {
+  bottom: 20px;
+  left: 260px;
+}
+
+.bin-vidro {
+  bottom: 20px;
+  left: 380px;
+}
+
+.bin-metal {
+  bottom: 20px;
+  left: 500px;
+}
+
+.item {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #ccc;
+  text-align: center;
+  line-height: 50px;
+  top: 0;
+  transition: top 0.5s linear;
+}
+
+.message {
+  display: none;
+  text-align: center;
+  margin-top: 20px;
+}
+
+#message-text {
+  font-size: 24px;
+}
+
+#restart-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo de Descarte Correto de Lixo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="bin bin-reciclavel" data-type="reciclavel">Reciclável</div>
+    <div class="bin bin-organico" data-type="organico">Orgânico</div>
+    <div class="bin bin-plastico" data-type="plastico">Plástico</div>
+    <div class="bin bin-vidro" data-type="vidro">Vidro</div>
+    <div class="bin bin-metal" data-type="metal">Metal</div>
+  </div>
+
+  <div id="message" class="message">
+    <p id="message-text"></p>
+    <button id="restart-btn" onclick="startGame()">Tentar Novamente</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
