@@ -17,6 +17,9 @@ body {
   width: 100px;
   height: 100px;
   border: 2px solid #000;
+  text-align: center;
+  line-height: 100px;
+  background-color: #eee;
 }
 
 .bin-reciclavel {
@@ -52,7 +55,7 @@ body {
   text-align: center;
   line-height: 50px;
   top: 0;
-  transition: top 0.5s linear;
+  cursor: grab;
 }
 
 .message {
@@ -69,4 +72,14 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+#score {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px solid #000;
 }
