@@ -9,11 +9,15 @@ const items = [
 ];
 
 let currentItemIndex = 0;
+let score = 0;
 let errors = 0;
+const maxErrors = 15;
 
 function startGame() {
+  score = 0;
   errors = 0;
   currentItemIndex = 0;
+  document.getElementById('score').textContent = `Pontuação: ${score}`;
   document.getElementById('message').style.display = 'none';
   document.querySelector('.container').innerHTML = `
     <div class="bin bin-reciclavel" data-type="reciclavel">Reciclável</div>
@@ -22,7 +26,17 @@ function startGame() {
     <div class="bin bin-vidro" data-type="vidro">Vidro</div>
     <div class="bin bin-metal" data-type="metal">Metal</div>
   `;
-  setInterval(dropItem, 2000);
+  generateItems();
+}
+
+function generateItems() {
+  for (let i = 0; i < 10; i++) {
+    const item = createItem();
+    const container = document.querySelector('.container');
+    const randomPosition = Math.floor(Math.random() * (container.offsetWidth - 50));
+    item.style.left = `${randomPosition}px`;
+    container.appendChild(item);
+  }
 }
 
 function createItem() {
@@ -30,47 +44,45 @@ function createItem() {
   item.className = 'item';
   item.innerText = items[currentItemIndex].name;
   item.setAttribute('data-type', items[currentItemIndex].type);
+  item.draggable = true;
+  item.addEventListener('dragstart', dragStart);
+  item.addEventListener('dragend', dragEnd);
   currentItemIndex = (currentItemIndex + 1) % items.length;
   return item;
 }
 
-function dropItem() {
-  const item = createItem();
-  const container = document.querySelector('.container');
-  const randomPosition = Math.floor(Math.random() * (container.offsetWidth - 50));
-  item.style.left = `${randomPosition}px`;
-  container.appendChild(item);
-  animateItem(item, container.offsetHeight - 100);
+function dragStart(event) {
+  event.dataTransfer.setData('text/plain', event.target.getAttribute('data-type'));
+  event.target.style.opacity = '0.5';
 }
 
-function animateItem(item, targetTop) {
-  let currentTop = 0;
-  const animation = setInterval(() => {
-    currentTop += 5;
-    item.style.top = `${currentTop}px`;
-    if (currentTop >= targetTop) {
-      clearInterval(animation);
-      checkBin(item);
-      item.remove();
-    }
-  }, 20);
+function dragEnd(event) {
+  event.target.style.opacity = '1';
 }
 
-function checkBin(item) {
-  const itemType = item.getAttribute('data-type');
-  const bin = document.querySelector(`.bin[data-type="${itemType}"]`);
-  const binRect = bin.getBoundingClientRect();
-  const itemRect = item.getBoundingClientRect();
-  if (
-    itemRect.left + itemRect.width / 2 >= binRect.left &&
-    itemRect.left + itemRect.width / 2 <= binRect.left + binRect.width &&
-    itemRect.top + itemRect.height >= binRect.top
-  ) {
-    console.log(`O item '${item.innerText}' foi descartado corretamente na lixeira ${bin.innerText}`);
+bins.forEach(bin => {
+  bin.addEventListener('dragover', dragOver);
+  bin.addEventListener('drop', dropItem);
+});
+
+function dragOver(event) {
+  event.preventDefault();
+}
+
+function dropItem(event) {
+  event.preventDefault();
+  const itemType = event.dataTransfer.getData('text/plain');
+  const binType = event.target.getAttribute('data-type');
+  if (itemType === binType) {
+    score++;
+    document.getElementById('score').textContent = `Pontuação: ${score}`;
+    const item = document.querySelector(`.item[data-type="${itemType}"]`);
+    if (item) item.remove();
   } else {
-    console.log(`O item '${item.innerText}' foi descartado incorretamente`);
+    score--;
     errors++;
-    if (errors >= 15) {
+    document.getElementById('score').textContent = `Pontuação: ${score}`;
+    if (errors >= maxErrors) {
       showMessage('Oops! Você perdeu :(', false);
     }
   }
@@ -82,3 +94,4 @@ function showMessage(text, success) {
 }
 
 window.onload = startGame;
+
